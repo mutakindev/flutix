@@ -15,19 +15,22 @@ class MoviePage extends StatelessWidget {
             ),
           ),
           padding: EdgeInsets.fromLTRB(defaultMargin, 20, defaultMargin, 30),
-          child: BlocBuilder<UserBloc, UserState>(
-            builder: (_, userState){
-              if(userState is UserLoaded){
-                return Row(
-                  children: [
-                    Text("Name"),
-                    Text(""),
-                  ],
-                );
-              } else {
-                SpinKitFadingCircle(color: accentColor2,size: 50,);
-              }
-            }),
+          // ignore: missing_return
+          child: BlocBuilder<UserBloc, UserState>(builder: (_, userState) {
+            if (userState is UserLoaded) {
+              Row(
+                children: [
+                  Text("Name"),
+                  Text(""),
+                ],
+              );
+            } else {
+              SpinKitFadingCircle(
+                color: accentColor2,
+                size: 50,
+              );
+            }
+          }),
         )
       ],
     );
