@@ -49,7 +49,9 @@ class _MainPageState extends State<MainPage> {
             child: FloatingActionButton(
               backgroundColor: accentColor2,
               elevation: 0,
-              onPressed: () {},
+              onPressed: (){
+                AuthServices.signOut();
+              },
               child: SizedBox(
                   width: 26,
                   height: 26,

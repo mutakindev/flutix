@@ -28,10 +28,13 @@ class _SignUpPageState extends State<SignUpPage> {
       child: Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
-            onTap: (){
-              context.bloc<PageBloc>().add(GoToSplashPage());
-            },
-            child: Icon(Icons.arrow_back,color: Colors.black,)),
+              onTap: () {
+                context.bloc<PageBloc>().add(GoToSplashPage());
+              },
+              child: Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              )),
           title: Text(
             "Create New\nYour Account",
             textAlign: TextAlign.center,
@@ -55,11 +58,24 @@ class _SignUpPageState extends State<SignUpPage> {
                   SizedBox(
                     height: 30,
                   ),
-                  Container(
-                    margin: EdgeInsets.only(bottom: 36),
-                    width: 90,
-                    height: 90,
-                    child: Image.asset("assets/user_pic.png"),
+                  Stack(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(bottom: 36),
+                        width: 90,
+                        height: 90,
+                        child: Image.asset("assets/user_pic.png"),
+                      ),
+                      Positioned(
+                        left: 25,
+                        top: 65,
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          child: Image.asset("assets/btn_add_photo.png"),
+                        ),
+                      ),
+                    ],
                   ),
                   TextField(
                     controller: nameController,
