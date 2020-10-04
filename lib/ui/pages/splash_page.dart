@@ -46,7 +46,7 @@ class SplashPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   onPressed: () {
-                    context.bloc<PageBloc>().add(GoToSignUpPage());
+                    context.bloc<PageBloc>().add(GoToSignUpPage(RegistrationData()));
                   },
                 ),
               ),

@@ -1,6 +1,9 @@
 part of 'pages.dart';
 
 class SignUpPage extends StatefulWidget {
+  final RegistrationData registrationData;
+
+  SignUpPage(this.registrationData);
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
@@ -17,65 +20,89 @@ class _SignUpPageState extends State<SignUpPage> {
   bool isSigningUp = false;
 
   @override
+  void initState() {
+    super.initState();
+
+    nameController.text = widget.registrationData.name;
+    emailController.text = widget.registrationData.email;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    context.bloc<ThemeBloc>().add(
-        ChangeTheme(ThemeData().copyWith(primaryColor: Color(0xFFE4E4E4))));
+    context
+        .bloc<ThemeBloc>()
+        .add(ChangeTheme(ThemeData().copyWith(primaryColor: accentColor1)));
     return WillPopScope(
-      onWillPop: () {
-        context.bloc<PageBloc>().add(GoToLoginPage());
+      onWillPop: () async {
+        context.bloc<PageBloc>().add(GoToSplashPage());
         return;
       },
       child: Scaffold(
-        appBar: AppBar(
-          leading: GestureDetector(
-              onTap: () {
-                context.bloc<PageBloc>().add(GoToSplashPage());
-              },
-              child: Icon(
-                Icons.arrow_back,
-                color: Colors.black,
-              )),
-          title: Text(
-            "Create New\nYour Account",
-            textAlign: TextAlign.center,
-            style: blackTextFont.copyWith(
-                fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          toolbarHeight: 80,
-        ),
         backgroundColor: Colors.white,
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: defaultMargin),
           child: ListView(
             children: <Widget>[
               Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 30,
+                  Container(
+                    height: 56,
+                    margin: EdgeInsets.only(top: 20, bottom: 22),
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: GestureDetector(
+                            onTap: () {
+                              context.bloc<PageBloc>().add(GoToSplashPage());
+                            },
+                            child: Container(
+                              width: 24,
+                              height: 24,
+                              child: Icon(Icons.arrow_back),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            child: Text(
+                              "Create New\nYour Account",
+                              textAlign: TextAlign.center,
+                              style: blackTextFont.copyWith(
+                                  fontSize: 20, fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                  Stack(
-                    children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: 36),
+                    width: 90,
+                    height: 104,
+                    child: Stack(children: [
                       Container(
-                        margin: EdgeInsets.only(bottom: 36),
-                        width: 90,
-                        height: 90,
-                        child: Image.asset("assets/user_pic.png"),
+                        child: (widget.registrationData.profilePicture == null)
+                            ? Image.asset("assets/user_pic.png")
+                            : FileImage(widget.registrationData.profilePicture),
                       ),
-                      Positioned(
-                        left: 25,
-                        top: 65,
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          child: Image.asset("assets/btn_add_photo.png"),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: GestureDetector(
+                          onTap: () {
+                          },
+                          child: Container(
+                            width: 28,
+                            height: 28,
+                            child: (widget.registrationData.profilePicture ==
+                                    null)
+                                ? Image.asset("assets/btn_add_photo.png")
+                                : Image.asset("assets/btn_remove_photo.png"),
+                          ),
                         ),
                       ),
-                    ],
+                    ]),
                   ),
                   TextField(
                     controller: nameController,
@@ -151,7 +178,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                             isConfirmPasswordValid)
                                     ? Colors.white
                                     : Colors.grey),
-                            onPressed: () {},
+                            onPressed: () {
+                              context.bloc<PageBloc>().add(
+                                  GoToPreferencePage(widget.registrationData));
+                            },
                           ),
                   ),
                 ],

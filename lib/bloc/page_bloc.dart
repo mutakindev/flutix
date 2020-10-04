@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:bwa_flutix/models/models.dart';
 import 'package:equatable/equatable.dart';
 
 part 'page_event.dart';
@@ -19,7 +20,13 @@ class PageBloc extends Bloc<PageEvent, PageState> {
       yield OnMainPage();
     }
     else if(event is GoToSignUpPage){
-      yield OnSignUpPage();
+      yield OnSignUpPage(event.registrationData);
+    }
+    else if(event is GoToPreferencePage){
+      yield OnPreferencePage(event.registrationData);
+    }
+    else if(event is GoToAccountConfirmationPage){
+      yield OnAccountConfirmationPage(event.registrationData);
     }
   }
 

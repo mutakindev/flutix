@@ -127,7 +127,12 @@ class _SignInPageState extends State<SignInPage> {
                                     )..show(context);
                                   } else {}
                                 } else {
-                                  return null;
+                                  Flushbar(
+                                      duration: Duration(seconds: 4),
+                                      flushbarPosition: FlushbarPosition.TOP,
+                                      backgroundColor: Color(0xFFFF5C83),
+                                      message: "Field cannot empty",
+                                    )..show(context);
                                 }
                               }),
                     ),
@@ -142,7 +147,7 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          context.bloc<PageBloc>().add(GoToSignUpPage());
+                          context.bloc<PageBloc>().add(GoToSignUpPage(RegistrationData()));
                         },
                         child: Text("Sign Up ",
                             style: purpleTextFont.copyWith(
