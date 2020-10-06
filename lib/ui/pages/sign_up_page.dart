@@ -83,14 +83,33 @@ class _SignUpPageState extends State<SignUpPage> {
                     height: 104,
                     child: Stack(children: [
                       Container(
-                        child: (widget.registrationData.profilePicture == null)
-                            ? Image.asset("assets/user_pic.png")
-                            : FileImage(widget.registrationData.profilePicture),
+                        height: 90,
+                        width: 90,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image:
+                                (widget.registrationData.profilePicture == null)
+                                    ? AssetImage("assets/user_pic.png")
+                                    : FileImage(
+                                        widget.registrationData.profilePicture),
+                          ),
+                        ),
                       ),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: GestureDetector(
-                          onTap: () {
+                          onTap: () async {
+                            if (widget.registrationData.profilePicture ==
+                                null) {
+                              widget.registrationData.profilePicture =
+                                  await getImage();
+                            } else {
+                              widget.registrationData.profilePicture = null;
+                            }
+
+                            setState(() {});
                           },
                           child: Container(
                             width: 28,
@@ -146,7 +165,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     onChanged: (text) {
                       setState(() {
                         isConfirmPasswordValid =
-                            text == confirmPasswordController.text;
+                            (text == passwordController.text);
                       });
                     },
                     obscureText: true,
@@ -174,15 +193,57 @@ class _SignUpPageState extends State<SignUpPage> {
                                 : accentColor3,
                             child: Icon(Icons.arrow_forward,
                                 color: (isEmailValid &&
-                                        isPasswordValid &
-                                            isConfirmPasswordValid)
+                                        isPasswordValid &&
+                                        isConfirmPasswordValid)
                                     ? Colors.white
                                     : Colors.grey),
                             onPressed: () {
-                              context.bloc<PageBloc>().add(
-                                  GoToPreferencePage(widget.registrationData));
-                            },
-                          ),
+                              // if (isFieldEmpty(
+                              //     nameController.text.trim(),
+                              //     emailController.text.trim(),
+                              //     passwordController.text.trim(),
+                              //     confirmPasswordController.text.trim())) {
+                              //   Flushbar(
+                              //     duration: Duration(milliseconds: 1500),
+                              //     flushbarPosition: FlushbarPosition.TOP,
+                              //     backgroundColor: Color(0x0FFFF5C83),
+                              //     message: "Please fill all the fields",
+                              //   )..show(context);
+                              // } else if (!isPasswordMatch(
+                              //     passwordController.text,
+                              //     confirmPasswordController.text)) {
+                              //   Flushbar(
+                              //     duration: Duration(milliseconds: 1500),
+                              //     flushbarPosition: FlushbarPosition.TOP,
+                              //     backgroundColor: Color(0x0FFFF5C83),
+                              //     message: "Password did't match",
+                              //   )..show(context);
+                              // } else if (!isPasswordValid) {
+                              //   Flushbar(
+                              //     duration: Duration(milliseconds: 1500),
+                              //     flushbarPosition: FlushbarPosition.TOP,
+                              //     backgroundColor: Color(0x0FFFF5C83),
+                              //     message: "Password too sort",
+                              //   )..show(context);
+                              // } else if (!isEmailValid) {
+                              //   Flushbar(
+                              //     duration: Duration(milliseconds: 1500),
+                              //     flushbarPosition: FlushbarPosition.TOP,
+                              //     backgroundColor: Color(0x0FFFF5C83),
+                              //     message: "Email Is Not Valid",
+                              //   )..show(context);
+                              // } else {
+                                widget.registrationData.name =
+                                    nameController.text;
+                                widget.registrationData.email =
+                                    emailController.text;
+                                widget.registrationData.password =
+                                    passwordController.text;
+
+                                context.bloc<PageBloc>().add(GoToPreferencePage(
+                                    widget.registrationData));
+                              // }
+                            }),
                   ),
                 ],
               ),
@@ -192,4 +253,16 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
+}
+
+bool isFieldEmpty(
+    String name, String email, String password, String confirmPassword) {
+  return (!(name.trim() != '' &&
+      email.trim() != '' &&
+      password.trim() != '' &&
+      confirmPassword.trim() != ''));
+}
+
+bool isPasswordMatch(String password, String confirmPassword) {
+  return (password == confirmPassword);
 }

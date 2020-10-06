@@ -1,5 +1,5 @@
 name: bwa_flutix
-description: A new Flutter project.
+description: Ticket Booking.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -38,6 +38,7 @@ dependencies:
   flutter_spinkit: ^4.1.2+1
   material_design_icons_flutter: ^4.0.5655
   intl: ^0.16.1
+  image_picker: ^0.6.7+11
 
 dev_dependencies:
   flutter_test:
