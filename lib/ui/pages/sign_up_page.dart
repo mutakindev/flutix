@@ -198,41 +198,42 @@ class _SignUpPageState extends State<SignUpPage> {
                                     ? Colors.white
                                     : Colors.grey),
                             onPressed: () {
-                              // if (isFieldEmpty(
-                              //     nameController.text.trim(),
-                              //     emailController.text.trim(),
-                              //     passwordController.text.trim(),
-                              //     confirmPasswordController.text.trim())) {
-                              //   Flushbar(
-                              //     duration: Duration(milliseconds: 1500),
-                              //     flushbarPosition: FlushbarPosition.TOP,
-                              //     backgroundColor: Color(0x0FFFF5C83),
-                              //     message: "Please fill all the fields",
-                              //   )..show(context);
-                              // } else if (!isPasswordMatch(
-                              //     passwordController.text,
-                              //     confirmPasswordController.text)) {
-                              //   Flushbar(
-                              //     duration: Duration(milliseconds: 1500),
-                              //     flushbarPosition: FlushbarPosition.TOP,
-                              //     backgroundColor: Color(0x0FFFF5C83),
-                              //     message: "Password did't match",
-                              //   )..show(context);
-                              // } else if (!isPasswordValid) {
-                              //   Flushbar(
-                              //     duration: Duration(milliseconds: 1500),
-                              //     flushbarPosition: FlushbarPosition.TOP,
-                              //     backgroundColor: Color(0x0FFFF5C83),
-                              //     message: "Password too sort",
-                              //   )..show(context);
-                              // } else if (!isEmailValid) {
-                              //   Flushbar(
-                              //     duration: Duration(milliseconds: 1500),
-                              //     flushbarPosition: FlushbarPosition.TOP,
-                              //     backgroundColor: Color(0x0FFFF5C83),
-                              //     message: "Email Is Not Valid",
-                              //   )..show(context);
-                              // } else {
+                              if (isFieldEmpty(
+                                  nameController.text.trim(),
+                                  emailController.text.trim(),
+                                  passwordController.text.trim(),
+                                  confirmPasswordController.text.trim())) {
+                                Flushbar(
+                                  duration: Duration(milliseconds: 1500),
+                                  flushbarPosition: FlushbarPosition.TOP,
+                                  backgroundColor: Color(0x0FFFF5C83),
+                                  message: "Please fill all the fields",
+                                )..show(context);
+                              } else if (!isPasswordMatch(
+                                  passwordController.text,
+                                  confirmPasswordController.text)) {
+                                Flushbar(
+                                  duration: Duration(milliseconds: 1500),
+                                  flushbarPosition: FlushbarPosition.TOP,
+                                  backgroundColor: Color(0x0FFFF5C83),
+                                  message: "Password did't match",
+                                )..show(context);
+                              } else if (!isPasswordValid) {
+                                Flushbar(
+                                  duration: Duration(milliseconds: 1500),
+                                  flushbarPosition: FlushbarPosition.TOP,
+                                  backgroundColor: Color(0x0FFFF5C83),
+                                  message: "Password too sort",
+                                )..show(context);
+                              } else if (!isEmailValid) {
+                                Flushbar(
+                                  duration: Duration(milliseconds: 1500),
+                                  flushbarPosition: FlushbarPosition.TOP,
+                                  backgroundColor: Color(0x0FFFF5C83),
+                                  message: "Email Is Not Valid",
+                                )..show(context);
+                              } else {
+                                
                                 widget.registrationData.name =
                                     nameController.text;
                                 widget.registrationData.email =
@@ -242,7 +243,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                                 context.bloc<PageBloc>().add(GoToPreferencePage(
                                     widget.registrationData));
-                              // }
+                              }
                             }),
                   ),
                 ],
