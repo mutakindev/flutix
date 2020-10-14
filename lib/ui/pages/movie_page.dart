@@ -108,7 +108,11 @@ class MoviePage extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return Container(
-                          margin: EdgeInsets.all(5), child: Text("${movies[index].title}"));
+                          margin: EdgeInsets.only(
+                              left: (index == 0) ? defaultMargin : 0,
+                              right:
+                                  (index == movies.length - 1) ? defaultMargin : 16),
+                          child: MovieCard(movies[index]));
                     });
               } else {
                 return SpinKitFadingCircle(color: mainColor, size: 50);
