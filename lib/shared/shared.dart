@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:path/path.dart';
 import 'package:bwa_flutix/bloc/blocs.dart';
 import 'package:flutter/material.dart';

@@ -12,6 +12,8 @@ class _SignInPageState extends State<SignInPage> {
   bool isEmailValid = false;
   bool isPasswordValid = false;
   bool isSigningIn = false;
+  bool isEmailError = false;
+  bool isPasswordError = false;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +58,7 @@ class _SignInPageState extends State<SignInPage> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
                       labelText: "Email Address",
+                      errorText: (isEmailError) ? '' : null,
                     ),
                   ),
                   SizedBox(height: 16),
@@ -71,6 +74,7 @@ class _SignInPageState extends State<SignInPage> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
                       labelText: "Password",
+                      errorText: (isPasswordError) ? '' : null,
                     ),
                   ),
                   SizedBox(height: 6),
@@ -113,26 +117,38 @@ class _SignInPageState extends State<SignInPage> {
                                       await AuthServices.signIn(
                                           emailController.text.trim(),
                                           passwordController.text.trim());
-                                  print(result.user);
 
                                   if (result.user == null) {
                                     setState(() {
                                       isSigningIn = false;
                                     });
-                                    Flushbar(
-                                      duration: Duration(seconds: 4),
-                                      flushbarPosition: FlushbarPosition.TOP,
-                                      backgroundColor: Color(0xFFFF5C83),
-                                      message: result.message,
-                                    )..show(context);
-                                  } else {}
+
+                                    if (result.message ==
+                                        "ERROR_USER_NOT_FOUND") {
+                                      setState(() {
+                                        isEmailError = true;
+                                        isPasswordError = false;
+                                      });
+                                      showFlushbarError(
+                                          "Email tidak terdaftar pada sistem kami",
+                                          context);
+                                    } else if (result.message ==
+                                        "ERROR_WRONG_PASSWORD") {
+                                      setState(() {
+                                        isEmailError = false;
+                                        isPasswordError = true;
+                                      });
+                                      showFlushbarError(
+                                          "Password yang anda masukan salah",
+                                          context);
+                                    } else {
+                                      showFlushbarError(
+                                          result.message, context);
+                                    }
+                                  }
                                 } else {
-                                  Flushbar(
-                                      duration: Duration(seconds: 4),
-                                      flushbarPosition: FlushbarPosition.TOP,
-                                      backgroundColor: Color(0xFFFF5C83),
-                                      message: "Field cannot empty",
-                                    )..show(context);
+                                  showFlushbarError(
+                                      "Field tidak boleh kosong", context);
                                 }
                               }),
                     ),
@@ -147,7 +163,9 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          context.bloc<PageBloc>().add(GoToSignUpPage(RegistrationData()));
+                          context
+                              .bloc<PageBloc>()
+                              .add(GoToSignUpPage(RegistrationData()));
                         },
                         child: Text("Sign Up ",
                             style: purpleTextFont.copyWith(

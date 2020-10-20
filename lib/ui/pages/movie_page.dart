@@ -110,8 +110,91 @@ class MoviePage extends StatelessWidget {
                       return Container(
                           margin: EdgeInsets.only(
                               left: (index == 0) ? defaultMargin : 0,
-                              right:
-                                  (index == movies.length - 1) ? defaultMargin : 16),
+                              right: (index == movies.length - 1)
+                                  ? defaultMargin
+                                  : 16),
+                          child: MovieCard(movies[index]));
+                    });
+              } else {
+                return SpinKitFadingCircle(color: mainColor, size: 50);
+              }
+            },
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.fromLTRB(defaultMargin, 30, defaultMargin, 12),
+          child: Text("Browse Movie",
+              style: blackTextFont.copyWith(
+                  fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        BlocBuilder<UserBloc, UserState>(
+          builder: (context, userState) {
+            if (userState is UserLoaded) {
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: defaultMargin),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(userState.user.selectedGenres.length,
+                      (index) {
+                       print( userState.user.selectedGenres[index]);
+                    return Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              width: 50,
+                              height: 50,
+                              padding: EdgeInsets.all(7),
+                              margin: EdgeInsets.only(bottom: 4),
+                              decoration: BoxDecoration(
+                                color: Color(0x0FFEBEFF6),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                              ),
+                              child: Image.asset(
+                                "assets/ic_action.png",
+                                width: 38,
+                                height: 38,
+                              )),
+                          Text("${userState.user.selectedGenres[index]}",
+                              style: blackTextFont.copyWith(
+                                  fontSize: 12, fontWeight: FontWeight.w400))
+                        ],
+                      ),
+                    );
+                  }),
+                ),
+              );
+            } else {
+              return SpinKitFadingCircle(
+                color: mainColor,
+                size: 50,
+              );
+            }
+          },
+        ),
+        Container(
+          margin: EdgeInsets.fromLTRB(defaultMargin, 30, defaultMargin, 12),
+          child: Text("Coming Soon",
+              style: blackTextFont.copyWith(
+                  fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(
+          height: 140,
+          child: BlocBuilder<MovieBloc, MovieState>(
+            builder: (context, movieState) {
+              if (movieState is MovieLoaded) {
+                List<Movie> movies = movieState.movies.sublist(0, 10);
+                return ListView.builder(
+                    itemCount: movies.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Container(
+                          margin: EdgeInsets.only(
+                              left: (index == 0) ? defaultMargin : 0,
+                              right: (index == movies.length - 1)
+                                  ? defaultMargin
+                                  : 16),
                           child: MovieCard(movies[index]));
                     });
               } else {
