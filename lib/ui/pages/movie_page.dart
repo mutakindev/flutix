@@ -132,38 +132,7 @@ class MoviePage extends StatelessWidget {
             if (userState is UserLoaded) {
               return Container(
                 margin: EdgeInsets.symmetric(horizontal: defaultMargin),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(userState.user.selectedGenres.length,
-                      (index) {
-                       print( userState.user.selectedGenres[index]);
-                    return Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                              width: 50,
-                              height: 50,
-                              padding: EdgeInsets.all(7),
-                              margin: EdgeInsets.only(bottom: 4),
-                              decoration: BoxDecoration(
-                                color: Color(0x0FFEBEFF6),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
-                              ),
-                              child: Image.asset(
-                                "assets/ic_action.png",
-                                width: 38,
-                                height: 38,
-                              )),
-                          Text("${userState.user.selectedGenres[index]}",
-                              style: blackTextFont.copyWith(
-                                  fontSize: 12, fontWeight: FontWeight.w400))
-                        ],
-                      ),
-                    );
-                  }),
-                ),
+                child: BrowseMovie(userState.user)
               );
             } else {
               return SpinKitFadingCircle(
@@ -184,7 +153,7 @@ class MoviePage extends StatelessWidget {
           child: BlocBuilder<MovieBloc, MovieState>(
             builder: (context, movieState) {
               if (movieState is MovieLoaded) {
-                List<Movie> movies = movieState.movies.sublist(0, 10);
+                List<Movie> movies = movieState.movies.sublist(10);
                 return ListView.builder(
                     itemCount: movies.length,
                     scrollDirection: Axis.horizontal,
@@ -195,7 +164,7 @@ class MoviePage extends StatelessWidget {
                               right: (index == movies.length - 1)
                                   ? defaultMargin
                                   : 16),
-                          child: MovieCard(movies[index]));
+                          child: ComingSoonCard(movies[index]));
                     });
               } else {
                 return SpinKitFadingCircle(color: mainColor, size: 50);
@@ -203,6 +172,7 @@ class MoviePage extends StatelessWidget {
             },
           ),
         ),
+        SizedBox(height: 150)
       ],
     );
   }
